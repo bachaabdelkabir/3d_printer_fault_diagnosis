@@ -1,9 +1,14 @@
 About the project (Milestones)
 
 --> Fist part : Arduino project that pulls data from the 3d printer's sensors
+      - 1 : Choosing and selecting  the right sensors
+      - 2 : Drawing the schematics
+      - 3 : Write and test the arduino program
 --> Second part : Python program that cleans (preeprocessing) the extracted data from the 3d printer 
---> Third part : Python program that uses the extracted data to learn BN structures 
-
+      - 1 : Choosing the right tools for data preeprocessing in linux environment
+      - 2 : Write and test the program      
+--> Third part : Python/R program that uses the extracted data to learn BN structures 
+      - 1 : Choosing the best tool for learning BN structures 
 
 
 
