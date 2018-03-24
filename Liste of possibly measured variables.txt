@@ -12,4 +12,8 @@ x_max Endstop
 y_min Endstop 
 y_max Endstop 
 z_min Endstop 
-z_max Endstop  
+z_max Endstop
+E0_enable
+x_enable
+y_enable
+z_enable  
