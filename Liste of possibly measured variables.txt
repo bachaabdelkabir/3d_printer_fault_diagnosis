@@ -1,7 +1,9 @@
 heatbed current
 heatbed temperature
+heatbed voltage
 hotend current
 hotend temperature
+hotend voltage
 x_axis stepper driver current
 y_axis stepper driver current
 z_axis stepper driver current
