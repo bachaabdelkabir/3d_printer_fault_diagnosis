@@ -1,3 +1,5 @@
+
+
 // ****************************************************************************************
 // BACHA Abdelkabir - Equipe Optimisation des Systèmes Industriels et Logistiques
 // - Laboratoire LRI - ENSEM - UH2C 
@@ -5,6 +7,7 @@
 // Mesure de tension inspiré de http://startingelectronics.org/articles/arduino/measuring-voltage-with-arduino/
 // Mesure de vitesse de rotation inspiré de http://www.instructables.com/id/Measure-RPM-DIY-Portable-Digital-Tachometer/?ALLSTEPS
 // Multiplixage http://playground.arduino.cc/learning/4051
+// RTC handling inspierd from https://github.com/adafruit/RTClib
 // ****************************************************************************************
 
 //*****************************************************************************************
@@ -13,6 +16,10 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 7                   // Data wire is plugged into pin 7 on the Arduino
+//---------------------------RTC section-------------------------------
+#include <Wire.h>                       // include wire library
+#include <RTClib.h>                     // include RTC library from https://github.com/adafruit/RTClib
+//---------------------------End of RTC section------------------------
 
 //*****************************************************************************************
 // Initialisation de la bibliothèque One Wire
@@ -74,7 +81,11 @@ const int C_pin = 4;                         // C pin off 4051
       const int X_EN =  24;      // the number of the D10 pin
       const int Y_EN =  26;      // the number of the D10 pin               
       const int Z_EN =  28;      // the number of the D10 pin 
-      
+//---------------------------RTC section-------------------------------
+      RTC_DS1307 rtc;
+      char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+//---------------------------End of RTC section------------------------
+
 //*****************************************************************************************
 // initialisations Générales 
 void setup() {
@@ -104,6 +115,22 @@ void setup() {
   pinMode(X_EN, INPUT);              // initialize the D10 pin as an input: 
   pinMode(Y_EN, INPUT);              // initialize the D10 pin as an input: 
   pinMode(Z_EN, INPUT);              // initialize the D10 pin as an input:   
+
+//---------------------------RTC section-------------------------------
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1);
+  }
+  if (! rtc.isrunning()) {
+    Serial.println("RTC is NOT running!");
+    // following line sets the RTC to the date & time this sketch was compiled
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // This line sets the RTC with an explicit date & time, for example to set
+    // January 21, 2014 at 3am you would call:
+    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+  }
+//---------------------------End of RTC section------------------------
+
   
 }
 //*****************************************************************************************
@@ -114,7 +141,9 @@ void loop() {
 Vcc = readVcc()/1000.0;
 
 
-
+//---------------------------RTC section-------------------------------
+    DateTime now = rtc.now();
+//---------------------------End of RTC section------------------------
 
 //--------------------------- 4051 Multiplexer section--------------------------------------
 //  for (count=0; count<=7; count++) {
@@ -387,6 +416,23 @@ Vcc = readVcc()/1000.0;
 
   Serial.print("\t"); 
   Serial.print(digitalRead(Y_EN));
+
+//---------------------------RTC section-------------------------------
+  Serial.print(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);
+  Serial.print(" (");
+  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  Serial.print(") ");
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);
+
+//---------------------------End of RTC section------------------------
   
   Serial.println(" "); 
   
