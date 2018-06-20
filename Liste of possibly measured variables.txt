@@ -8,6 +8,10 @@ x_axis stepper driver current
 y_axis stepper driver current
 z_axis stepper driver current
 Extruder stepper driver current
+x_axis stepper driver temperature
+y_axis stepper driver temperature
+z_axis stepper driver temperature
+Extruder stepper driver temperature
 Power supply current
 x_min Endstop
 x_max Endstop 
