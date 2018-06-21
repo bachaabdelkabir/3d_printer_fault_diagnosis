@@ -77,10 +77,16 @@ const int C_pin = 4;                         // C pin off 4051
 
       const int D8 =  8;      // the number of the D8 pin
       const int D10 =  10;      // the number of the D10 pin
-      const int E_EN =  22;      // the number of the D10 pin
-      const int X_EN =  24;      // the number of the D10 pin
-      const int Y_EN =  26;      // the number of the D10 pin               
-      const int Z_EN =  28;      // the number of the D10 pin 
+      const int E_EN =  22;      // the number of the E_EN pin
+      const int X_EN =  24;      // the number of the X_EN pin
+      const int Y_EN =  26;      // the number of the Y_EN pin               
+      const int Z_EN =  28;      // the number of the Z_EN pin 
+      const int X_MIN =  30;      // the number of the X_MIN pin 
+      const int Y_MAX =  32;      // the number of the Y_MAX pin 
+      const int Z_MIN =  34;      // the number of the Z_MIN pin             
+
+
+
 //---------------------------RTC section-------------------------------
       RTC_DS1307 rtc;
       char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -111,10 +117,14 @@ void setup() {
 
   pinMode(D8, INPUT);               // initialize the D8 pin as an input:
   pinMode(D10, INPUT);              // initialize the D10 pin as an input:
-  pinMode(E_EN, INPUT);              // initialize the D10 pin as an input:  
-  pinMode(X_EN, INPUT);              // initialize the D10 pin as an input: 
-  pinMode(Y_EN, INPUT);              // initialize the D10 pin as an input: 
-  pinMode(Z_EN, INPUT);              // initialize the D10 pin as an input:   
+  pinMode(E_EN, INPUT);              // initialize the E_EN pin as an input:  
+  pinMode(X_EN, INPUT);              // initialize the X_EN pin as an input: 
+  pinMode(Y_EN, INPUT);              // initialize the Y_EN pin as an input: 
+  pinMode(Z_EN, INPUT);              // initialize the Z_EN pin as an input:   
+  pinMode(X_MIN, INPUT);              // initialize the X_MIN pin as an input: 
+  pinMode(Y_MAX, INPUT);              // initialize the Y_MAX pin as an input: 
+  pinMode(Z_MIN, INPUT);              // initialize the Z_MIN pin as an input:   
+    
 
 //---------------------------RTC section-------------------------------
   if (! rtc.begin()) {
@@ -364,6 +374,9 @@ Vcc = readVcc()/1000.0;
   Serial.print(temperture_sensors.getTempC(Probe03));
   Serial.print("\t");
 
+  Serial.print((temperture_sensors.getTempC(Probe03)+temperture_sensors.getTempC(Probe03))/2);
+  Serial.print("\t");  
+
 //for (count=0; count<=7; count++) {
 //    Serial.print("\t");
 //    Serial.print(Voltage[count],2);
@@ -391,6 +404,10 @@ Vcc = readVcc()/1000.0;
   Serial.print(Voltage[7],2);
 
   Serial.print("\t"); 
+//  emulating the Z stepper current from X and Y 
+  Serial.print((Voltage[6]+Voltage[7])/2,2);
+
+  Serial.print("\t"); 
 //  Serial.print(" V_moteur ");  
   Serial.print(Tension_supply,2);
   
@@ -416,6 +433,18 @@ Vcc = readVcc()/1000.0;
 
   Serial.print("\t"); 
   Serial.print(digitalRead(Y_EN));
+
+  Serial.print("\t"); 
+  Serial.print(digitalRead(Y_EN));  
+
+  Serial.print("\t"); 
+  Serial.print(digitalRead(X_MIN));
+
+  Serial.print("\t"); 
+  Serial.print(digitalRead(Y_MAX));
+
+  Serial.print("\t"); 
+  Serial.print(digitalRead(Z_MIN));
 
 //---------------------------RTC section-------------------------------
   Serial.print("\t"); 
